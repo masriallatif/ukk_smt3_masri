@@ -26,11 +26,11 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-  { title: "Manajemen User", url: "#users", icon: Users },
-  { title: "Kategori", url: "#kategori", icon: Shapes },
-  { title: "Jurusan", url: "#jurusan", icon: GraduationCap },
-  { title: "Artikel", url: "#artikel", icon: BookOpen },
-  { title: "Profil", url: "#profil", icon: School },
+  { title: "Manajemen User", url: "/admin/users", icon: Users },
+  { title: "Kategori", url: "/admin/category", icon: Shapes },
+  { title: "Jurusan", url: "/admin/jurusan", icon: GraduationCap },
+  { title: "Artikel", url: "/admin/artikel", icon: BookOpen },
+  { title: "Profil", url: "/admin/profile", icon: School },
 ]
 
 export function AppSidebar() {
@@ -58,7 +58,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    isActive={item.url === "/admin" && pathname === item.url}
+                    isActive={pathname === item.url}
                     render={<Link href={item.url} />}
                   >
                     <item.icon />

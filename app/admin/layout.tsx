@@ -1,13 +1,24 @@
+import { redirect } from "next/navigation"
+
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { getAuthenticatedUser } from "@/lib/auth"
 
 import ProfileDropdown from "./profile-dropdown"
 
-export default function AdminLayout({
+export const dynamic = "force-dynamic"
+
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const user = await getAuthenticatedUser()
+
+  if (!user) {
+    redirect("/")
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -22,7 +33,7 @@ export default function AdminLayout({
               </p>
             </div>
           </div>
-          <ProfileDropdown />
+          <ProfileDropdown nama={user.fullname} email={user.email} />
         </header>
         <div className="p-4 sm:p-6">{children}</div>
       </main>
