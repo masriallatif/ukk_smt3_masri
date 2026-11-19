@@ -65,7 +65,7 @@ export default function UserManagementPage() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [router])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -87,7 +87,7 @@ export default function UserManagementPage() {
       const res = await fetch(`/api/users/${user.id}`, { method: "DELETE" })
 
       if (res.status === 401) {
-        router.push("/")
+        window.location.href = "/"
         return
       }
 
@@ -137,7 +137,7 @@ export default function UserManagementPage() {
           </TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">ID</TableHead>
+              <TableHead className="w-[80px]">No</TableHead>
               <TableHead>Nama</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
@@ -159,9 +159,11 @@ export default function UserManagementPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              users.map((u) => (
+              users.map((u, index) => (
                 <TableRow key={u.id}>
-                  <TableCell className="font-medium">{u.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {((pagination?.page ?? page) - 1) * PAGE_SIZE + index + 1}
+                  </TableCell>
                   <TableCell>{u.fullname}</TableCell>
                   <TableCell>{u.email}</TableCell>
                   <TableCell className="capitalize">{u.role}</TableCell>
