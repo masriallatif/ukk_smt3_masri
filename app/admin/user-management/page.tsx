@@ -16,6 +16,7 @@ import {
 
 type User = {
   id: number
+  kode: string | null
   fullname: string
   email: string
   role: string
@@ -137,7 +138,7 @@ export default function UserManagementPage() {
           </TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">No</TableHead>
+              <TableHead className="w-[120px]">ID</TableHead>
               <TableHead>Nama</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
@@ -159,10 +160,10 @@ export default function UserManagementPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              users.map((u, index) => (
+              users.map((u) => (
                 <TableRow key={u.id}>
                   <TableCell className="font-medium">
-                    {((pagination?.page ?? page) - 1) * PAGE_SIZE + index + 1}
+                    {u.kode ?? "-"}
                   </TableCell>
                   <TableCell>{u.fullname}</TableCell>
                   <TableCell>{u.email}</TableCell>

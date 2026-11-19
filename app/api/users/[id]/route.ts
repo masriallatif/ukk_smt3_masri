@@ -2,9 +2,11 @@ import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { createUserJwt, hashUserPassword } from "@/lib/user-security"
+import { generateUserKode } from "@/lib/user-code"
 
 const userFields = {
   id: true,
+  kode: true,
   fullname: true,
   email: true,
   role: true,
@@ -88,12 +90,28 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const passwordHash = password ? await hashUserPassword(password) : undefined
     const user = await prisma.$transaction(async (transaction) => {
+      const current = await transaction.user.findUnique({
+        where: { id: userId },
+        select: { role: true, kode: true },
+      })
+      if (!current) {
+        throw Object.assign(new Error("User tidak ditemukan."), { code: "P2025" })
+      }
+
+      // Kode dibuat ulang hanya kalau role berubah (adm -> stf atau sebaliknya)
+      // atau kalau user ini belum punya kode.
+      const newKode =
+        current.role !== role || !current.kode
+          ? await generateUserKode(transaction, role)
+          : undefined
+
       const updated = await transaction.user.update({
         where: { id: userId },
         data: {
           fullname,
           email,
           role,
+          ...(newKode ? { kode: newKode } : {}),
           ...(passwordHash ? { password: passwordHash } : {}),
         },
       })

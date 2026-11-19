@@ -2,9 +2,11 @@ import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { createUserJwt, hashUserPassword } from "@/lib/user-security"
+import { generateUserKode } from "@/lib/user-code"
 
 const userFields = {
   id: true,
+  kode: true,
   fullname: true,
   email: true,
   role: true,
@@ -85,7 +87,13 @@ export async function POST(request: Request) {
     const passwordHash = await hashUserPassword(password)
     const user = await prisma.$transaction(async (transaction) => {
       const created = await transaction.user.create({
-        data: { fullname, email, password: passwordHash, role },
+        data: {
+          kode: await generateUserKode(transaction, role),
+          fullname,
+          email,
+          password: passwordHash,
+          role,
+        },
       })
       const token = createUserJwt(created)
       return transaction.user.update({
