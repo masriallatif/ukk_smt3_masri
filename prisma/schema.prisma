@@ -56,3 +56,35 @@ model Artikel {
 
   @@map("artikel")
 }
+
+model TypeUnit {
+  idUnitType   Int                @id @default(autoincrement()) @map("id_unit_type")
+  namaTypeUnit String             @map("nama_type_unit")
+  branchId     Int                @map("branch_id")
+  facilities   TypeUnitFacility[]
+  createAt     DateTime           @default(now()) @map("create_at")
+  updateAt     DateTime           @updatedAt @map("update_at")
+
+  @@map("tbl_type_unit")
+}
+
+model Facility {
+  kodeFacility String             @id @map("kode_facility")
+  namaFacility String             @map("nama_facility")
+  typeUnits    TypeUnitFacility[]
+  createAt     DateTime           @default(now()) @map("create_at")
+  updateAt     DateTime           @updatedAt @map("update_at")
+
+  @@map("tbl_facility")
+}
+
+model TypeUnitFacility {
+  idUnitType   Int      @map("id_unit_type")
+  kodeFacility String   @map("kode_facility")
+  typeUnit     TypeUnit @relation(fields: [idUnitType], references: [idUnitType], onDelete: Cascade)
+  facility     Facility @relation(fields: [kodeFacility], references: [kodeFacility], onDelete: Cascade)
+
+  @@id([idUnitType, kodeFacility])
+  @@index([kodeFacility])
+  @@map("tbl_type_unit_facility")
+}

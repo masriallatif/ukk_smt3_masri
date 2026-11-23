@@ -58,6 +58,21 @@ export type Category = Prisma.CategoryModel
 export type Jurusan = Prisma.JurusanModel
 /**
  * Model Artikel
- * 
+ *
  */
 export type Artikel = Prisma.ArtikelModel
+/**
+ * Model TypeUnit
+ *
+ */
+export type TypeUnit = Prisma.TypeUnitModel
+/**
+ * Model Facility
+ *
+ */
+export type Facility = Prisma.FacilityModel
+/**
+ * Model TypeUnitFacility
+ *
+ */
+export type TypeUnitFacility = Prisma.TypeUnitFacilityModel

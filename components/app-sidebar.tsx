@@ -4,11 +4,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   BookOpen,
+  BedDouble,
   GraduationCap,
   LayoutDashboard,
   School,
   Shapes,
   Users,
+  Wrench,
 } from "lucide-react"
 
 import {
@@ -27,6 +29,8 @@ import {
 const items = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
   { title: "Manajemen User", url: "/admin/users", icon: Users },
+  { title: "Tipe Unit", url: "/admin/unit-types", icon: BedDouble },
+  { title: "Fasilitas", url: "/admin/facilities", icon: Wrench },
   { title: "Kategori", url: "/admin/category", icon: Shapes },
   { title: "Jurusan", url: "/admin/jurusan", icon: GraduationCap },
   { title: "Artikel", url: "/admin/artikel", icon: BookOpen },
